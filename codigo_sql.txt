@@ -1,0 +1,16 @@
+SELECT 
+  ano, 
+  sigla_uf, 
+  id_municipio, 
+  estagio_bd, 
+  MAX(CASE WHEN conta_bd = 'Saúde' THEN valor END) AS saude,
+  MAX(CASE WHEN conta_bd = 'Segurança Pública' THEN valor END) AS seguranca_publica,
+  MAX(CASE WHEN conta_bd = 'Educação' THEN valor END) AS educacao,
+  MAX(CASE WHEN conta_bd = 'Cultura' THEN valor END) AS cultura,
+  MAX(CASE WHEN conta_bd = 'Desporto e Lazer' THEN valor END) AS desporto_lazer, 
+FROM `basedosdados.br_me_siconfi.municipio_despesas_funcao` 
+WHERE ano BETWEEN 2012 AND 2022
+  AND sigla_uf = 'RS'
+  AND estagio_bd = 'Despesas Empenhadas'
+  AND conta_bd IN ('Saúde', 'Segurança Pública', 'Educação', 'Cultura', 'Desporto e Lazer')
+GROUP BY ano, sigla_uf, id_municipio, estagio_bd
